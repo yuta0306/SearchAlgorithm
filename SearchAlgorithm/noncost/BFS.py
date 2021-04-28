@@ -1,4 +1,5 @@
-from typing import Dict, Union, Optional
+from typing import Dict, Union
+import sys
 
 __all__ = [
     'BFS',
@@ -14,19 +15,30 @@ class BFS:
         self.start = start
         self.goal = goal
 
-    def search(self, start: Union[str, int]=None, goal: Union[str, int]=None):
+    def search(self, start: Union[str, int]=None, goal: Union[str, int]=None, verbose: int=0):
         start = start if start is not None else self.start
         goal = goal if goal is not None else self.goal
         assert start is not None and goal is not None
 
         self.OPEN.append(start)
+        count = 0
         while len(self.OPEN) > 0:
+            count += 1
             if goal in self.OPEN:
                 break
-            n = self.OPEN.pop()
+
+            n = self.OPEN.pop(0)
+            if verbose < 0:
+                sys.stdout.write(f'STEP : {count}\n')
+                sys.stdout.write(f'Current Node ===> {n}\n')
             children = [
                 child for child in self.graph[n] if child not in self.CLOSED
             ]
+            if verbose < 0:
+                if len(children) > 0:
+                    sys.stdout.write(f'Next Node ======> {" ".join(children)}\n')
+                else:
+                    sys.stdout.write(f'Next Node ======> {" ".join(self.OPEN[0])}\n')
             self.CLOSED.append(n)
             self.OPEN.extend(children)
             self.PTR[n] = children
