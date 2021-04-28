@@ -5,3 +5,4 @@ if __name__ == '__main__':
     print(graph, type(graph))
 
     bfs = BFS(graph=graph, start='S', goal='G')
+    bfs.search('S', 'G')

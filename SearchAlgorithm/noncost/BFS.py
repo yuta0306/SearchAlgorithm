@@ -10,7 +10,7 @@ class BFS:
         self.graph = graph
         self.OPEN = list()
         self.CLOSED = list()
-        self.PTR = list()
+        self.PTR = dict()
         self.start = start
         self.goal = goal
 
@@ -29,3 +29,21 @@ class BFS:
             ]
             self.CLOSED.append(n)
             self.OPEN.extend(children)
+            self.PTR[n] = children
+
+        route = self._get_route(start, goal)
+
+        return route
+
+    def _get_route(self, start, goal):
+        history = list()
+        node = [k for k, v in self.PTR.items() if goal in v]
+        assert len(node) > 0
+        node = node[0]
+        history.append(node)
+
+        while node != start:
+            node = [k for k, v in self.PTR.items() if node in v][0]
+            history.append(node)
+
+        return history
