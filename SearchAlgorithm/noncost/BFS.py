@@ -48,6 +48,7 @@ class BFS:
         return route
 
     def _get_route(self, start, goal):
+        assert len(self.PTR) > 0
         history = list()
         node = [k for k, v in self.PTR.items() if goal in v]
         assert len(node) > 0
