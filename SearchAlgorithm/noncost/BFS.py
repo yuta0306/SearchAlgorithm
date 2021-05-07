@@ -47,7 +47,7 @@ class BFS:
 
         return route
 
-    def _get_route(self, start, goal):
+    def _get_route(self, start, goal) -> list or str:
         assert len(self.PTR) > 0
         history = list()
         node = [k for k, v in self.PTR.items() if goal in v]
@@ -56,7 +56,13 @@ class BFS:
         history.append(node)
 
         while node != start:
-            node = [k for k, v in self.PTR.items() if node in v][0]
+            try:
+                node = [k for k, v in self.PTR.items() if node in v][0]
+            except IndexError as e:
+                return 'No Route'
             history.append(node)
 
+        history = list(reversed(history))
+        history.append(goal)
+        
         return history
