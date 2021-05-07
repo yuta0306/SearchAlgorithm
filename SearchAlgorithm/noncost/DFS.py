@@ -2,10 +2,10 @@ from typing import Dict, Union
 import sys
 
 __all__ = [
-    'BFS',
+    'DFS',
 ]
 
-class BFS:
+class DFS:
     def __init__(self, graph: Dict[Union[str, int], Union[str, int]],
                 start: Union[str, int]=None, goal: Union[str, int]=None) -> None:
         self.graph = graph
@@ -24,10 +24,10 @@ class BFS:
         count = 0
         while len(self.OPEN) > 0:
             count += 1
-            n = self.OPEN.pop(0)
-            if n == goal:
+            if goal in self.OPEN:
                 break
 
+            n = self.OPEN.pop(0)
             if verbose < 0:
                 sys.stdout.write(f'STEP : {count}\n')
                 sys.stdout.write(f'Current Node ===> {n}\n')
@@ -41,16 +41,13 @@ class BFS:
                     sys.stdout.write(f'Next Node ======> {" ".join(self.OPEN[0])}\n')
             self.CLOSED.append(n)
             self.OPEN.extend(children)
-            if goal in self.OPEN:
-                val = self.OPEN.pop(self.OPEN.index(goal))
-                self.OPEN.insert(0, val)
             self.PTR[n] = children
 
         route = self._get_route(start, goal)
 
         return route
 
-    def _get_route(self, start, goal) -> list or str:
+    def _get_route(self, start, goal) -> Union[list, str]:
         assert len(self.PTR) > 0
         history = list()
         node = [k for k, v in self.PTR.items() if goal in v]
@@ -67,5 +64,5 @@ class BFS:
 
         history = list(reversed(history))
         history.append(goal)
-
+        
         return history
