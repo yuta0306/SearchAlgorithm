@@ -34,14 +34,15 @@ class DFS:
             children = [
                 child for child in self.graph[n] if child not in self.CLOSED and child not in self.OPEN
             ]
-            if verbose < 0:
-                if len(children) > 0:
-                    sys.stdout.write(f'Next Node ======> {" ".join(children)}\n')
-                else:
-                    sys.stdout.write(f'Next Node ======> {" ".join(self.OPEN[0])}\n')
             self.CLOSED.append(n)
-            self.OPEN.extend(children)
+            self.OPEN = children + self.OPEN
             self.PTR[n] = children
+
+            if verbose < 0:
+                if len(self.OPEN) > 0:
+                    sys.stdout.write(f'Next Node ======> {" ".join(self.OPEN)}\n')
+                else:
+                    sys.stdout.write(f'Next Node ======> No Node\n')
 
         route = self._get_route(start, goal)
 
